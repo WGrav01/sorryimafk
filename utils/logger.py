@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 
@@ -43,7 +44,8 @@ class Logger(logging.Logger):
     afkbot_logger.setLevel(logging.DEBUG)  # Set the afkbot_logger level to debug for testing
 
     if not afkbot_logger.handlers:  # prevent duplicate messages
-        file_handler = logging.FileHandler(filename='afkbot.log', encoding='utf-8', mode='w')
+        file_handler = logging.FileHandler(filename=os.path.join(os.path.dirname(__file__), '..', 'afkbot.log'),
+                                           encoding='utf-8', mode='w')
         file_handler.setFormatter(Formatter())
         afkbot_logger.addHandler(file_handler)
 
