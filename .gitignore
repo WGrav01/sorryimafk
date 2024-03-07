@@ -161,3 +161,6 @@ cython_debug/
 
 # User database
 /users.sqlite
+
+# Bot log
+/afkbot.log
