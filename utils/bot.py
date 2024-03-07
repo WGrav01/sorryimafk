@@ -8,6 +8,16 @@ load_dotenv()  # load the .env file
 
 log = logger.Logger()  # initialize the logger
 
+"""
+runs when the bot logs in (initializes database)
+
+Parameters:
+    owner_id (int): the owner's ID
+
+Returns:
+    None
+"""
+
 
 class Bot(discord.AutoShardedBot):  # autosharded bot ensures improved performance when in many servers
     async def on_ready(self, owner_id=os.getenv('OWNER_ID')):  # runs when the bot logs in (initializes database)
