@@ -3,6 +3,11 @@ import sys
 
 
 class Formatter(logging.Formatter):
+    """
+    The Formatter class provides methods for formatting log messages with customizable options such as date, time,
+     log level, and message format.
+    """
+
     # Colors
     grey = "\x1b[38;20m"
     yellow = "\x1b[33;20m"
@@ -26,6 +31,9 @@ class Formatter(logging.Formatter):
 
 
 class Logger(logging.Logger):
+    """
+    A custom logger with handlers for logging to a file and standard (console) output.
+    """
 
     def __init__(self):
         super().__init__('afkbot')
