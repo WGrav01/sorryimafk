@@ -15,6 +15,7 @@ class Formatter(logging.Formatter):
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"  # reset back to normal formatting
     format = "[%(asctime)s - %(name)s - %(levelname)s] - %(message)s (%(filename)s:%(lineno)d)"  # log message format
+    datefmt = '%Y-%m-%d %H:%M:%S'
 
     FORMATS = {  # set the log format for each level
         logging.DEBUG: grey + format + reset,
@@ -43,9 +44,9 @@ class Logger(logging.Logger):
 
     if not afkbot_logger.handlers:  # prevent duplicate messages
         file_handler = logging.FileHandler(filename='afkbot.log', encoding='utf-8', mode='w')
-        file_handler.setFormatter(Formatter(Formatter.format, datefmt='%X'))
+        file_handler.setFormatter(Formatter())
         afkbot_logger.addHandler(file_handler)
 
         console_handler = logging.StreamHandler(sys.stdout)  # Use sys.stdout for standard output
-        console_handler.setFormatter(Formatter(Formatter.format, datefmt='%X'))
+        console_handler.setFormatter(Formatter())
         afkbot_logger.addHandler(console_handler)
