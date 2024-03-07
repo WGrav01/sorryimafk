@@ -3,10 +3,9 @@ import os
 import sys
 
 
-class Formatter(logging.Formatter):
+class ColorFormatter(logging.Formatter):
     """
-    The Formatter class provides methods for formatting log messages with customizable options such as date, time,
-     log level, and message format.
+    The ColorFormatter class provides methods for formatting log messages with color (ansi escape codes)
     """
 
     # Colors
@@ -24,6 +23,28 @@ class Formatter(logging.Formatter):
         logging.WARNING: yellow + format + reset,
         logging.ERROR: red + format + reset,
         logging.CRITICAL: bold_red + format + reset
+    }
+
+    def format(self, record):  # override the format method
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+
+class Formatter(logging.Formatter):
+    """
+    The Formatter class provides methods for formatting log messages without color
+    """
+
+    format = "[%(asctime)s - %(name)s - %(levelname)s] - %(message)s (%(filename)s:%(lineno)d)"  # log message format
+    datefmt = '%Y-%m-%d %H:%M:%S'
+
+    FORMATS = {  # set the log format for each level
+        logging.DEBUG: format,
+        logging.INFO: format,
+        logging.WARNING: format,
+        logging.ERROR: format,
+        logging.CRITICAL: format
     }
 
     def format(self, record):  # override the format method
@@ -50,5 +71,5 @@ class Logger(logging.Logger):
         afkbot_logger.addHandler(file_handler)
 
         console_handler = logging.StreamHandler(sys.stdout)  # Use sys.stdout for standard output
-        console_handler.setFormatter(Formatter())
+        console_handler.setFormatter(ColorFormatter())
         afkbot_logger.addHandler(console_handler)
