@@ -24,7 +24,8 @@ class Bot(discord.AutoShardedBot):  # autosharded bot ensures improved performan
         log.info(f'Logged in successfully as {self.user} with ID {self.user.id}')
         log.debug(f'Owner ID: {owner_id}')  # print the owner ID for debugging
         db_init_query = ("CREATE TABLE IF NOT EXISTS Afk"  # initalizes the database
-                         " (usr INTEGER PRIMARY KEY, status VARCHAR(1024), time_back VARCHAR(1024))")
+                         " (usr INTEGER PRIMARY KEY, status VARCHAR(1024), time_back VARCHAR(1024),"
+                         " quiet INTEGER(1, 0), time VARCHAR(23), channel INTEGER)")
         db = await aiosqlite.connect(os.path.join(os.path.dirname(__file__), '..', 'users.sqlite'))
         await db.execute(db_init_query)  # execute the query
         await db.commit()  # commit the changes
