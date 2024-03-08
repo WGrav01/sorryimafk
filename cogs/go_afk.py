@@ -25,7 +25,7 @@ class GoAfk(commands.Cog):
     @discord.slash_command(name="afk", description="Go afk")
     async def goafk(self, ctx,
                     quiet: Option(str, description='Do you the bot to not announce your being AFK?', required=True,
-                                  choices=['On', 'Off']),
+                                  choices=['Off', 'On']),
                     status: Option(str, description='Enter the reason for being afk (optional)', max_length=1024,
                                    required=False),
                     time_back: Option(str, description='When do you plan on being back? (optional)',
