@@ -28,7 +28,7 @@ class GoAfk(commands.Cog):
                                   choices=['Off', 'On']),
                     status: Option(str, description='Enter the reason for being afk (optional)', max_length=1024,
                                    required=False),
-                    time_back: Option(str, description='When do you plan on being back? (optional)',
+                    time_back: Option(str, description='Describe when you plan on being back (optional)',
                                       max_length=1024, required=False)):
 
         log.debug(f'Received afk command from user {ctx.user.name}, in channel {ctx.channel.name},'
