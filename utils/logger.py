@@ -19,7 +19,7 @@ class ColorFormatter(logging.Formatter):
     bold_red = colorama.Fore.RED + colorama.Style.BRIGHT
     reset = colorama.Fore.RESET
     format = "[%(asctime)s - %(levelname)s] - %(message)s (%(filename)s:%(lineno)d)"  # log message format
-    datefmt = '%d %B, %Y'
+    datefmt = '%m-%d-%Y, %X'
 
     FORMATS = {  # set the log colors for each level
         logging.DEBUG: grey + format + reset,

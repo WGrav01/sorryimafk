@@ -4,7 +4,7 @@ from utils import logger
 log = logger.Logger.afkbot_logger
 
 
-def time_duration(start_str, end_str):
+async def time_duration(start_str, end_str):
     """
     Calculate the duration between two time strings and return the duration in days, hours, minutes, and seconds.
 
@@ -16,9 +16,9 @@ def time_duration(start_str, end_str):
     str: The duration in days, hours, minutes, and seconds
     """
 
-    start = datetime.strptime(start_str, '%d %B, %Y')
+    start = datetime.strptime(start_str, '%m-%d-%Y, %X')
     log.debug(f'Start: {start}')
-    end = datetime.strptime(end_str, '%d %B, %Y')
+    end = datetime.strptime(end_str, '%m-%d-%Y, %X')
     log.debug(f'End: {end}')
     delta = end - start
     log.debug(f'Delta: {delta}')
