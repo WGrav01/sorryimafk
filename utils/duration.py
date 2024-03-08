@@ -49,6 +49,9 @@ async def time_duration(start_str, end_str):
 
     log.debug(f'Duration parts: {duration_parts}')
     if len(duration_parts) == 1:
+        log.debug(f'len(duration_parts) == 1, returning {duration_parts[0]}')
         return duration_parts[0]
     else:
+        log.debug(f'len(duration_parts) != 1,({len(duration_parts)})'
+                  f' returning {', '.join(duration_parts[:-1]) + ', and ' + duration_parts[-1]}')
         return ', '.join(duration_parts[:-1]) + ', and ' + duration_parts[-1]
