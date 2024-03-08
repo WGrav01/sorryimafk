@@ -1,6 +1,9 @@
 import logging
 import os
 import sys
+import colorama
+
+colorama.init()
 
 
 class ColorFormatter(logging.Formatter):
@@ -9,17 +12,18 @@ class ColorFormatter(logging.Formatter):
     """
 
     # Colors
-    grey = "\x1b[38;20m"
-    yellow = "\x1b[33;20m"
-    red = "\x1b[31;20m"
-    bold_red = "\x1b[31;1m"
-    reset = "\x1b[0m"  # reset back to normal formatting
-    format = "[%(asctime)s - %(name)s - %(levelname)s] - %(message)s (%(filename)s:%(lineno)d)"  # log message format
+    grey = colorama.Fore.WHITE
+    blue = colorama.Fore.BLUE
+    yellow = colorama.Fore.YELLOW
+    red = colorama.Fore.RED
+    bold_red = colorama.Fore.RED + colorama.Style.BRIGHT
+    reset = colorama.Fore.RESET
+    format = "[%(asctime)s - %(levelname)s] - %(message)s (%(filename)s:%(lineno)d)"  # log message format
     datefmt = '%Y-%m-%d %H:%M:%S'
 
-    FORMATS = {  # set the log format for each level
+    FORMATS = {  # set the log colors for each level
         logging.DEBUG: grey + format + reset,
-        logging.INFO: grey + format + reset,
+        logging.INFO: blue + format + reset,
         logging.WARNING: yellow + format + reset,
         logging.ERROR: red + format + reset,
         logging.CRITICAL: bold_red + format + reset
@@ -68,8 +72,9 @@ class Logger(logging.Logger):
         file_handler = logging.FileHandler(filename=os.path.join(os.path.dirname(__file__), '..', 'afkbot.log'),
                                            encoding='utf-8', mode='w')
         file_handler.setFormatter(Formatter())
-        afkbot_logger.addHandler(file_handler)
 
         console_handler = logging.StreamHandler(sys.stdout)  # Use sys.stdout for standard output
         console_handler.setFormatter(ColorFormatter())
+
         afkbot_logger.addHandler(console_handler)
+        afkbot_logger.addHandler(file_handler)
