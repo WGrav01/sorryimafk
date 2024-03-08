@@ -17,9 +17,9 @@ Methods:
 
 load_dotenv()
 bot = bot.Bot()
-log = logger.Logger()
+log = logger.Logger.afkbot_logger
 
-log.info('Starting up...')
+log.debug('Starting up...')
 for filename in os.listdir('./cogs'):  # load all the cogs and print that they've been loaded
     log.debug(f'Found file {filename}')
     if filename.endswith('.py') and filename.startswith('#') is False:  # check if it is a python file and not disabled
@@ -28,4 +28,5 @@ for filename in os.listdir('./cogs'):  # load all the cogs and print that they'v
 log.debug('Done loading cogs')
 
 log.debug(f'Running bot with token {os.getenv("DISCORD_TOKEN")}')
+
 bot.run(os.getenv('DISCORD_TOKEN'))
