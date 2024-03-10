@@ -42,7 +42,7 @@ class CheckUSR(commands.Cog):
             log.debug(f'Channel id result: {result[0][5]}')
         except IndexError:
             log.debug(f'User {member.id} not found in database')
-            not_afk = discord.Embed(title=f'Error: {member} is not AFK', color=discord.Color.red())
+            not_afk = discord.Embed(title=f'Error: {member.name} is not AFK', color=discord.Color.red())
             await db.close()
             log.debug(f'Closed database connection')
             await ctx.respond(embed=not_afk, ephemeral=True)
@@ -50,7 +50,7 @@ class CheckUSR(commands.Cog):
             return
         else:
             log.debug(f'User {member.id} is in the database')
-            afk = discord.Embed(title=f'User {member} is AFK', color=discord.Color.orange())
+            afk = discord.Embed(title=f'User {member.name} is AFK', color=discord.Color.orange())
             if result[0][1] is not None:
                 log.debug(f'{member} has status {result[0][1]}')
                 afk.add_field(name='With status', value=result[0][1])
@@ -62,12 +62,17 @@ class CheckUSR(commands.Cog):
             else:
                 log.debug(f'{member} has no ETA until back')
             afk.set_thumbnail(url=member.display_avatar.url)
-            afk.set_footer(text=f'{member} has been away for'
+            afk.set_footer(text=f'{member.name} has been away for'
                                 f' {await duration.time_duration(start_str=result[0][4], end_str=time.now())}')
             await db.close()
             log.debug(f'Closed database connection')
             await ctx.respond(embed=afk, ephemeral=True)
             log.info(f"Sent {member}'s afk status message to user {ctx.user.id}")
+
+    @commands.user_command(name="Check User", description="Check if a user is afk")
+    async def checkuser(self, ctx, member: discord.User):
+        await ctx.defer(ephemeral=True)
+        await self.checkusr(ctx, member=member)
 
 
 def setup(bot):  # this is called by Pycord to set up the cog
