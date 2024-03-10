@@ -42,7 +42,7 @@ class CheckUSR(commands.Cog):
             log.debug(f'Channel id result: {result[0][5]}')
         except IndexError:
             log.debug(f'User {member.id} not found in database')
-            not_afk = discord.Embed(title=f'Error: {member.name} is not AFK', color=discord.Color.red())
+            not_afk = discord.Embed(title=f'{member.name} is not AFK', color=discord.Color.green())
             await db.close()
             log.debug(f'Closed database connection')
             await ctx.respond(embed=not_afk, ephemeral=True)
@@ -70,7 +70,7 @@ class CheckUSR(commands.Cog):
             log.info(f"Sent {member}'s afk status message to user {ctx.user.id}")
 
     @commands.user_command(name="Check User", description="Check if a user is afk")
-    async def checkuser(self, ctx, member: discord.User):
+    async def checkusr_user_command(self, ctx, member: discord.User):
         await ctx.defer(ephemeral=True)
         await self.checkusr(ctx, member=member)
 
