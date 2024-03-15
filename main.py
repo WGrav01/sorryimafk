@@ -2,6 +2,7 @@ from utils import logger
 from dotenv import load_dotenv
 import os
 from utils import bot
+import discord
 
 """
 Main module for starting up the bot and loading cogs. (consider it the launcher)
@@ -16,7 +17,10 @@ Methods:
 """
 
 load_dotenv()
-bot = bot.Bot()
+
+bot_intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True)
+bot = bot.Bot(intents=bot_intents)
+
 log = logger.Logger.afkbot_logger
 
 log.debug('Starting up...')
@@ -28,5 +32,4 @@ for filename in os.listdir('./cogs'):  # load all the cogs and print that they'v
 log.debug('Done loading cogs')
 
 log.debug(f'Running bot with token {os.getenv("DISCORD_TOKEN")}')
-
 bot.run(os.getenv('DISCORD_TOKEN'))
