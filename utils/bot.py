@@ -20,9 +20,9 @@ Returns:
 
 
 class Bot(discord.AutoShardedBot):  # autosharded bot ensures improved performance when in many servers
-    async def on_ready(self, owner_id=os.getenv('OWNER_ID')):  # runs when the bot logs in (initializes database)
+
+    async def on_ready(self):  # runs when the bot logs in (initializes database)
         log.info(f'Logged in successfully as {self.user} with ID {self.user.id}')
-        log.debug(f'Owner ID: {owner_id}')  # print the owner ID for debugging
         db_init_query = ("CREATE TABLE IF NOT EXISTS Afk"  # initalizes the database
                          " (usr INTEGER PRIMARY KEY, status VARCHAR(1024), time_back VARCHAR(1024),"
                          " quiet INTEGER(1, 0), time VARCHAR(23), channel INTEGER)")
