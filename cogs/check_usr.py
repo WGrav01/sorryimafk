@@ -21,7 +21,7 @@ class CheckUSR(commands.Cog):
     @commands.slash_command(name="checkusr", description="Check if user is afk")
     async def checkusr(self, ctx,
                        member: discord.Option(discord.Member,
-                                              description='Check if this member is afk (leave blank to check yourself)',
+                                              description='Check if a member is afk (leave blank to check yourself)',
                                               required=False)):
         if member is None:
             member = ctx.user
@@ -69,7 +69,7 @@ class CheckUSR(commands.Cog):
             await ctx.respond(embed=afk, ephemeral=True)
             log.info(f"Sent {member}'s afk status message to user {ctx.user.id}")
 
-    @commands.user_command(name="Check User", description="Check if a user is afk")
+    @commands.user_command(name="Check afk status", description="Check if a user is afk")
     async def checkusr_user_command(self, ctx, member: discord.User):
         await ctx.defer(ephemeral=True)
         await self.checkusr(ctx, member=member)
