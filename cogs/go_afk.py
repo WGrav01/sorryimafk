@@ -15,7 +15,7 @@ class GoAfk(commands.Cog):
     """
     A function to handle the user going AFK via the /afk command
     - Parameters:
-        - ctx: The context of the command.
+        - ctx: The user of the command.
         - status (str): Enter the reason for being afk (optional), max length 1024.
         - time_back (str): When do you plan on being back? (optional), max length 1024.
         - quiet (str): Do you want the bot to not announce your being AFK? Choices: ['On', 'Off']
@@ -33,31 +33,6 @@ class GoAfk(commands.Cog):
 
         log.debug(f'Received afk command from user {ctx.user.name}, in channel {ctx.channel.name},'
                   f' status: {status}, time_back: {time_back}, quiet: {quiet}')
-
-        if len(status) > 1024:  # discord's per field character limit is 1024
-            status_character_limit = discord.Embed(title='Error',
-                                                   description=f'Your status is {len(status)}'
-                                                               f' characters long, but the maximum is 1024.',
-                                                   color=discord.Color.red())
-            await ctx.respond(embed=status_character_limit, ephemeral=True)
-            log.debug(f'Status for {ctx.user} is too long, responding with error embed')
-            return
-        elif len(time_back) > 1024:
-            time_back_character_limit = discord.Embed(title='Error',
-                                                      description=f'Your ETA until back is {len(status)}'
-                                                                  f' characters long, but the maximum is 1024.',
-                                                      color=discord.Color.red())
-            await ctx.respond(embed=time_back_character_limit, ephemeral=True)
-            log.debug(f'Time back for {ctx.user} is too long, responding with error embed')
-            return
-        elif len(status) > 1024 and len(time_back) > 1024:
-            character_limit = discord.Embed(title='Error',
-                                            description=f'Both your status ({len(status)} characters long) and your '
-                                                        f'ETA until back ({len(time_back)} characters long) are '
-                                                        f'over the character limit of 1024.', color=discord.Color.red())
-            await ctx.respond(embed=character_limit, ephemeral=True)
-            log.debug(f'Status and time back for {ctx.user} are too long, responding with error embed')
-            return
 
         if quiet == 'On':
             log.debug('Setting quiet to 1 and deferring')
