@@ -58,7 +58,7 @@ class GoAfk(commands.Cog):
         await db.close()
         log.debug(f'Closed database connection')
 
-        afk = discord.embeds.Embed(title=f'✅ {ctx.user.name} is now afk', color=discord.Color.green())
+        afk = discord.embeds.Embed(title=f'✅ {ctx.user.nick} is now afk', color=discord.Color.green())
         log.debug(f'Created afk embed')
         user = ctx.user
         log.debug(f'Fetched user: {user}, id: {user.id}')

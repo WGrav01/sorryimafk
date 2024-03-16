@@ -50,7 +50,7 @@ class CheckUSR(commands.Cog):
             return
         else:
             log.debug(f'User {member.id} is in the database')
-            afk = discord.Embed(title=f'User {member.name} is AFK', color=discord.Color.orange())
+            afk = discord.Embed(title=f'💤 User {member.nick} is AFK', color=discord.Color.orange())
             if result[0][1] is not None:
                 log.debug(f'{member} has status {result[0][1]}')
                 afk.add_field(name='With status', value=result[0][1])
@@ -62,7 +62,7 @@ class CheckUSR(commands.Cog):
             else:
                 log.debug(f'{member} has no ETA until back')
             afk.set_thumbnail(url=member.display_avatar.url)
-            afk.set_footer(text=f'{member.name} has been away for'
+            afk.set_footer(text=f'{member.nick} has been away for'
                                 f' {await duration.time_duration(start_str=result[0][4], end_str=time.now())}')
             await db.close()
             log.debug(f'Closed database connection')

@@ -68,7 +68,7 @@ class DeAfk(commands.Cog):
         await db.close()
         log.debug(f'Closed database connection')
 
-        afk = discord.Embed(title=f'Welcome back {ctx.user}!', color=discord.Color.blurple())
+        afk = discord.Embed(title=f'Welcome back {ctx.user.nick}!', color=discord.Color.green())
         log.debug(f'Created afk embed')
         afk_duration_coroutine = duration.time_duration(start_str=result[0][4], end_str=time.now())
         afk_duration = await afk_duration_coroutine
