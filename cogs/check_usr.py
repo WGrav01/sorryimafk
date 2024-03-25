@@ -19,62 +19,77 @@ class CheckUSR(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="checkusr", description="Check if user is afk")
-    async def checkusr(self, ctx,
-                       member: discord.Option(discord.Member,
-                                              description='Check if a member is afk (leave blank to check yourself)',
-                                              required=False)):
+    async def checkusr(
+        self,
+        ctx,
+        member: discord.Option(
+            discord.Member,
+            description="Check if a member is afk (leave blank to check yourself)",
+            required=False,
+        ),
+    ):
         if member is None:
             member = ctx.user
-            log.debug(f'Member left blank, defaulting to {ctx.user.id}')
+            log.debug(f"Member left blank, defaulting to {ctx.user.id}")
 
-        log.debug(f'User {ctx.user.id} fetched {member}')
+        log.debug(f"User {ctx.user.id} fetched {member}")
 
-        db = await aiosqlite.connect(os.path.join(os.path.dirname(__file__), '..', 'users.sqlite'))
-        log.debug(f'Connected to database {db}')
-        query = 'SELECT * FROM Afk WHERE :usr = usr'
-        log.debug(f'Query: {query}')
-        values = {'usr': member.id}
-        log.debug(f'Values: {values}')
-        log.debug(f'Checking if user {member.id} is in the database')
+        db = await aiosqlite.connect(
+            os.path.join(os.path.dirname(__file__), "..", "users.sqlite")
+        )
+        log.debug(f"Connected to database {db}")
+        query = "SELECT * FROM Afk WHERE :usr = usr"
+        log.debug(f"Query: {query}")
+        values = {"usr": member.id}
+        log.debug(f"Values: {values}")
+        log.debug(f"Checking if user {member.id} is in the database")
         try:
             result = await db.execute_fetchall(query, values)
-            log.debug(f'User id result: {result[0][0]}')
-            log.debug(f'Channel id result: {result[0][5]}')
+            log.debug(f"User id result: {result[0][0]}")
+            log.debug(f"Channel id result: {result[0][5]}")
         except IndexError:
-            log.debug(f'User {member.id} not found in database')
-            not_afk = discord.Embed(title=f'{member.name} is not AFK', color=discord.Color.green())
+            log.debug(f"User {member.id} not found in database")
+            not_afk = discord.Embed(
+                title=f"{member.name} is not AFK", color=discord.Color.green()
+            )
             await db.close()
-            log.debug(f'Closed database connection')
+            log.debug(f"Closed database connection")
             await ctx.respond(embed=not_afk, ephemeral=True)
-            log.info(f'Sent error message to user {ctx.user.id}')
+            log.info(f"Sent error message to user {ctx.user.id}")
             return
         else:
-            log.debug(f'User {member.id} is in the database')
-            afk = discord.Embed(title=f'💤 User {member.nick} is AFK', color=discord.Color.orange())
+            log.debug(f"User {member.id} is in the database")
+            afk = discord.Embed(
+                title=f"💤 User {member.nick} is AFK", color=discord.Color.orange()
+            )
             if result[0][1] is not None:
-                log.debug(f'{member} has status {result[0][1]}')
-                afk.add_field(name='With status', value=result[0][1])
+                log.debug(f"{member} has status {result[0][1]}")
+                afk.add_field(name="With status", value=result[0][1])
             else:
-                log.debug(f'{member} has no status')
+                log.debug(f"{member} has no status")
             if result[0][2] is not None:
-                log.debug(f'{member} has has ETA until back {result[0][2]}')
-                afk.add_field(name='ETA until back', value=result[0][2])
+                log.debug(f"{member} has has ETA until back {result[0][2]}")
+                afk.add_field(name="ETA until back", value=result[0][2])
             else:
-                log.debug(f'{member} has no ETA until back')
+                log.debug(f"{member} has no ETA until back")
             afk.set_thumbnail(url=member.display_avatar.url)
-            afk.set_footer(text=f'{member.nick} has been away for'
-                                f' {await duration.time_duration(start_str=result[0][4], end_str=time.now())}')
+            afk.set_footer(
+                text=f"{member.nick} has been away for"
+                f" {await duration.time_duration(start_str=result[0][4], end_str=time.now())}"
+            )
             await db.close()
-            log.debug(f'Closed database connection')
+            log.debug(f"Closed database connection")
             await ctx.respond(embed=afk, ephemeral=True)
             log.info(f"Sent {member}'s afk status message to user {ctx.user.id}")
 
-    @commands.user_command(name="Check afk status", description="Check if a user is afk")
+    @commands.user_command(
+        name="Check afk status", description="Check if a user is afk"
+    )
     async def checkusr_user_command(self, ctx, member: discord.User):
         await ctx.defer(ephemeral=True)
         await self.checkusr(ctx, member=member)
 
 
 def setup(bot):  # this is called by Pycord to set up the cog
-    log.debug('Running checkusr cog setup function')
+    log.debug("Running checkusr cog setup function")
     bot.add_cog(CheckUSR(bot))  # add the cog to the bot
